@@ -40,9 +40,11 @@ public class AuthService {
         user = userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
         return AuthResponse.builder()
                 .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .user(user)     //화면 표시용
                 .build();
     }

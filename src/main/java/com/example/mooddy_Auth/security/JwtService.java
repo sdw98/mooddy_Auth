@@ -50,12 +50,17 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
+    // RefreshToken 발급
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, refreshTokenExpiration);
+    }
+
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
             Long expiration
     ) {
-        return Jwts.builder()
+         return Jwts.builder()
                 .setClaims(extraClaims) // 클라이언트/추가 정보용
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis())) //토큰 발급시간 설정

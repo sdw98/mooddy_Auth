@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true   # H2 콘솔 사용
+      path: /h2-console
+
+jwt:
+  secret: FFB2FC7345FB1F68575CDECE5F642ABC1234567890ABCDEF1234567890ABCDEF
+  expiration: 86400000
+  refresh-expiration: 604800000
+
+server:
+  port: 8080

@@ -2,6 +2,7 @@ package com.example.mooddy_Auth.service;
 
 import com.example.mooddy_Auth.dto.AuthResponse;
 import com.example.mooddy_Auth.dto.SignupRequest;
+import com.example.mooddy_Auth.dto.UserDetailResponseDto;
 import com.example.mooddy_Auth.entity.AuthProvider;
 import com.example.mooddy_Auth.entity.User;
 import com.example.mooddy_Auth.exception.UserAlreadyExistsException;
@@ -39,13 +40,24 @@ public class AuthService {
         // DB에 저장하고 저장된 객체 반환(DB ID 포함)
         user = userRepository.save(user);
 
+        // JWT 발급
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
+        // User -> UserDetailResponseDto 변환
+        UserDetailResponseDto userDetailResponseDto = UserDetailResponseDto.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .birthDate(user.getBirthDate())
+                .provider(user.getProvider())
+                .build();
+
+        //AuthResponse 반환
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .user(user)     //화면 표시용
+                .user(userDetailResponseDto)     //화면 표시용
                 .build();
     }
 }

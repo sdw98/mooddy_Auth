@@ -1,6 +1,5 @@
 package com.example.mooddy_Auth.dto;
 
-import com.example.mooddy_Auth.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +17,5 @@ public class AuthResponse {
     @JsonProperty("refresh_token")
     private String refreshToken;
 
-    private User user;
+    private UserDetailResponseDto user;
 }

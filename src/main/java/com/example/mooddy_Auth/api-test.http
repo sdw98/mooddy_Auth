@@ -1,5 +1,5 @@
 ### 회원가입
-POST http://localhost:8080/signup
+POST http://localhost:8080/auth/signup
 Content-Type: application/json
 
 {
@@ -7,4 +7,13 @@ Content-Type: application/json
   "username": "testuser1",
   "password": "password123",
   "birthDate": "2000-01-01"
+}
+
+### 로그인
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "test1@example.com",
+  "password": "password123"
 }

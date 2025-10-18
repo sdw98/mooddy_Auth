@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+// 화면 표시용
 public class UserDetailResponseDto {
     private Long id;
     private String username;

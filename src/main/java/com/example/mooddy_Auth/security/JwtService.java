@@ -114,7 +114,7 @@ public class JwtService {
 
     // 토큰 활성 체크
     public boolean isTokenActive(String token) {
-        return extractTokenExpiration(token).before(new Date());    // 만료시간 > 현재시간 = true
+        return extractTokenExpiration(token).after(new Date());    // 만료시간 > 현재시간 = true
     }
 
 

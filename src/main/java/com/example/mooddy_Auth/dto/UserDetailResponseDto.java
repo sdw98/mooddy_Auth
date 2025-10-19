@@ -15,7 +15,7 @@ import java.time.LocalDate;
 // 화면 표시용
 public class UserDetailResponseDto {
     private Long id;
-    private String username;
+    private String nickname;
     private String email;
     private LocalDate birthDate;
     private AuthProvider provider;

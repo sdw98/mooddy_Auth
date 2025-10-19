@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String nickname;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -61,4 +61,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() { return enabled; }
+
+    @Override
+    public String getUsername() { return nickname; }
 }

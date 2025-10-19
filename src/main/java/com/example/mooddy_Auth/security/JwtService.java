@@ -39,7 +39,7 @@ public class JwtService {
         if (userDetails instanceof User user) {
             extraClaims.put("id", user.getId());
             extraClaims.put("email", user.getEmail());
-            extraClaims.put("username", user.getUsername());
+            extraClaims.put("nickname", user.getNickname());
         }
 
         //중간 메서드 호출

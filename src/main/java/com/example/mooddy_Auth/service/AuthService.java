@@ -29,8 +29,8 @@ public class AuthService {
     // 회원가입
     public AuthResponse signup(SignupRequest signupRequest) {
         // 닉네임 중복 확인
-        if(userRepository.existsByUsername(signupRequest.getUsername())) {
-            throw new UserAlreadyExistsException("Username already exists");
+        if(userRepository.existsByNickname(signupRequest.getNickname())) {
+            throw new UserAlreadyExistsException("nickname already exists");
         }
         // 이메일 중복 확인
         if(userRepository.existsByEmail(signupRequest.getEmail())) {
@@ -38,7 +38,7 @@ public class AuthService {
         }
 
         User user = User.builder()
-                .username(signupRequest.getUsername())
+                .nickname(signupRequest.getNickname())
                 .email(signupRequest.getEmail())
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
                 .birthDate(signupRequest.getBirthDate())
@@ -55,7 +55,7 @@ public class AuthService {
         // User -> UserDetailResponseDto 변환
         UserDetailResponseDto userDetailResponseDto = UserDetailResponseDto.builder()
                 .id(user.getId())
-                .username(user.getUsername())
+                .nickname(user.getNickname())
                 .email(user.getEmail())
                 .birthDate(user.getBirthDate())
                 .provider(user.getProvider())
@@ -90,7 +90,7 @@ public class AuthService {
             // User -> UserDetailResponseDto 변환
             UserDetailResponseDto userDetailResponseDto = UserDetailResponseDto.builder()
                     .id(user.getId())
-                    .username(user.getUsername())
+                    .nickname(user.getNickname())
                     .email(user.getEmail())
                     .birthDate(user.getBirthDate())
                     .provider(user.getProvider())

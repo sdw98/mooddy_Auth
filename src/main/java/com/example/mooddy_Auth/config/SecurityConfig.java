@@ -1,6 +1,7 @@
 package com.example.mooddy_Auth.config;
 
-//import com.example.mooddy_Auth.security.JwtAuthenticationFilter;
+import com.example.mooddy_Auth.security.JwtAuthenticationFilter;
+import com.example.mooddy_Auth.security.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 //    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,6 +37,10 @@ public class SecurityConfig {
                         )
                 // 폼 로그인 비활성화
                 .formLogin(AbstractHttpConfigurer::disable)
+                // 인증실패시 EntryPoint 연결
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
                 .build();
     }
 }

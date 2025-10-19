@@ -8,6 +8,6 @@ public class AuthRequest {
     @NotBlank (message = "email is required")
     private String email;
 
-    @NotBlank (message = "message is required")
+    @NotBlank (message = "password is required")
     private String password;
 }

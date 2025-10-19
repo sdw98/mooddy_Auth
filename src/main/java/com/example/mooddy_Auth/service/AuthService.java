@@ -58,6 +58,7 @@ public class AuthService {
                 .email(user.getEmail())
                 .birthDate(user.getBirthDate())
                 .provider(user.getProvider())
+                .enabled(user.isEnabled())
                 .build();
 
         //AuthResponse 반환
@@ -79,7 +80,7 @@ public class AuthService {
                     new UsernamePasswordAuthenticationToken(email, authRequest.getPassword())
             );
 
-            // UserDetailsService 에서 조회된 User 가져오기
+            // AuthenticationManager가 UserDetailsService를 통해 인증 후 반환한 User 객체 가져오기
             User user = (User) authentication.getPrincipal();
 
             // 로그인 성공시 토큰 발급

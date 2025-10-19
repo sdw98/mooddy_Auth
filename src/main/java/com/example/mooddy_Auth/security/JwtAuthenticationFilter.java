@@ -97,9 +97,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 //Security Context에 인증 정보 등록
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-
-            filterChain.doFilter(request, response);
         }
+        filterChain.doFilter(request, response);
     }
 
     private void sendResponse(HttpServletResponse response,int status, String message) throws IOException {

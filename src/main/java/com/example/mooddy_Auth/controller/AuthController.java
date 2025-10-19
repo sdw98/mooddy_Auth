@@ -1,5 +1,6 @@
 package com.example.mooddy_Auth.controller;
 
+import com.example.mooddy_Auth.dto.ApiResponse;
 import com.example.mooddy_Auth.dto.AuthRequest;
 import com.example.mooddy_Auth.dto.AuthResponse;
 import com.example.mooddy_Auth.dto.SignupRequest;
@@ -30,5 +31,10 @@ public class AuthController {
             @Valid @RequestBody AuthRequest authRequest
             ) {
         return ResponseEntity.ok(authService.login(authRequest));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse> logout() {
+        return ResponseEntity.ok(new ApiResponse(true, "로그아웃 성공"));
     }
 }

@@ -1,6 +1,6 @@
 package com.example.mooddy_Auth.config;
 
-import com.example.mooddy_Auth.security.JwtAuthenticationFilter;
+//import com.example.mooddy_Auth.security.JwtAuthenticationFilter;
 import com.example.mooddy_Auth.security.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

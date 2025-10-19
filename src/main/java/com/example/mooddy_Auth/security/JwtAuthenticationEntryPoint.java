@@ -28,7 +28,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         final Map<String, Object> body = new HashMap<>();
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED); // 상태 코드
         body.put("error", "Unauthorized"); //에러 타입
-        body.put("message", authException.getMessage()); // 인증 실패 메시지
+        body.put("message", "Invalid email or password"); // 인증 실패 메시지
         body.put("path", request.getRequestURI()); // 어느 URL에서 실패했는지
         body.put("timestamp", LocalDateTime.now().toString());
 

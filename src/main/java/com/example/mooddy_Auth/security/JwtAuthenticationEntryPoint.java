@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    // SecurityConfig 에서 AuthenticationException 발생하면 여기로 들어옴
+    // SecurityConfig (필터 체인) 에서 AuthenticationException 발생하면 여기로 들어옴
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,

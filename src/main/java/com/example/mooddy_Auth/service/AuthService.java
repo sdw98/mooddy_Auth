@@ -7,7 +7,6 @@ import com.example.mooddy_Auth.dto.UserDetailResponseDto;
 import com.example.mooddy_Auth.entity.AuthProvider;
 import com.example.mooddy_Auth.entity.User;
 import com.example.mooddy_Auth.exception.AuthenticationException;
-import com.example.mooddy_Auth.exception.BadRequestException;
 import com.example.mooddy_Auth.exception.UserAlreadyExistsException;
 import com.example.mooddy_Auth.repository.UserRepository;
 import com.example.mooddy_Auth.security.JwtService;
@@ -102,7 +101,7 @@ public class AuthService {
                     .refreshToken(refreshToken)
                     .user(userDetailResponseDto)
                     .build();
-        } catch (BadRequestException e) {
+        } catch (AuthenticationException e) {
             throw new AuthenticationException("Invalid email or password");
         }
     }

@@ -2,6 +2,7 @@ package com.example.mooddy_Auth.config;
 
 import com.example.mooddy_Auth.security.JwtAuthenticationFilter;
 import com.example.mooddy_Auth.security.JwtAuthenticationEntryPoint;
+import com.example.mooddy_Auth.security.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,8 +30,15 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions().disable()) // h2-console
                 //url별 접근 권한 규칙 정함
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/h2-console/**").permitAll()     // 이 경로는 인증없이 접속 가능
+                        .requestMatchers("/auth/**",
+                                "/h2-console/**",
+                                "/oauth2/**",
+                                "/login/oauth2/**"
+                        ).permitAll()     // 이 경로는 인증없이 접속 가능
                         .anyRequest().authenticated()       // 나머지는 로그인 필요
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2SuccessHandler)
                 )
                 .sessionManagement(
                         session -> session

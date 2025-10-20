@@ -41,7 +41,7 @@ public class AuthService {
                 .email(signupRequest.getEmail())
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
                 .birthDate(signupRequest.getBirthDate())
-                .provider(AuthProvider.Local)
+                .provider(AuthProvider.LOCAL)
                 .build();
 
         // DB에 저장하고 저장된 객체 반환(DB ID 포함)

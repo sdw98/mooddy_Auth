@@ -19,15 +19,12 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    //application.yml에 Key 가져오기
     @Value("${jwt.secret}")
     private String secretKey;
 
-    // access token 만료시간
     @Value("${jwt.expiration}")
     private long jwtExpiration;
 
-    //refresh token 만료시간
     @Value("${jwt.refresh-expiration}")
     private long refreshTokenExpiration;
 
@@ -44,7 +41,6 @@ public class JwtService {
             extraClaims.put("nickname", user.getNickname());
         }
 
-        //중간 메서드 호출
         return generateToken(extraClaims, userDetails);
     }
 
@@ -87,7 +83,13 @@ public class JwtService {
         return (identifier.equals(userDetails.getUsername()) && isTokenActive(token));
     }
 
-    // Claims 추출
+    // 토큰 활성 체크
+    public boolean isTokenActive(String token) {
+        return extractTokenExpiration(token).after(new Date());    // 만료시간 > 현재시간 = true
+    }
+
+    // ---------------- 토큰 정보 추출 -------------------
+    // Claims 전체 추출
     public Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
@@ -96,9 +98,10 @@ public class JwtService {
                 .getBody();
     }
 
+    // 특정 Claims 추출
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getClaims(token);  //claims 전체추출
-        return claimsResolver.apply(claims);    //원하는 값 추출
+        final Claims claims = getClaims(token);
+        return claimsResolver.apply(claims);
     }
 
     // 사용자 식별값 추출 ( ex: id, email)
@@ -107,16 +110,10 @@ public class JwtService {
         return claims.getSubject();
     }
 
-    // 토큰에서 만료 시간 추출
+    // 만료 시간 추출
     private Date extractTokenExpiration(String token) {
         return getClaim(token, Claims::getExpiration);
     }
-
-    // 토큰 활성 체크
-    public boolean isTokenActive(String token) {
-        return extractTokenExpiration(token).after(new Date());    // 만료시간 > 현재시간 = true
-    }
-
 
     // 생성/검증 용
     private Key getSignInKey() {

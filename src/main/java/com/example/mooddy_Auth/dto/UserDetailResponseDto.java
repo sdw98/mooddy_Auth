@@ -1,6 +1,7 @@
 package com.example.mooddy_Auth.dto;
 
 import com.example.mooddy_Auth.entity.AuthProvider;
+import com.example.mooddy_Auth.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,15 @@ public class UserDetailResponseDto {
     private LocalDate birthDate;
     private AuthProvider provider;
     private boolean enabled;
+
+    public static UserDetailResponseDto fromEntity(User user) {
+        return UserDetailResponseDto.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .birthDate(user.getBirthDate())
+                .provider(user.getProvider())
+                .enabled(user.isEnabled())
+                .build();
+    }
 }

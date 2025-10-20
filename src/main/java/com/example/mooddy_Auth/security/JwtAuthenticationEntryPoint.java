@@ -22,14 +22,14 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
 
-        response.setContentType("application/json");    // 응답 타입 JSON
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 인증실패 -> 401 Unauthorized
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         final Map<String, Object> body = new HashMap<>();
-        body.put("status", HttpServletResponse.SC_UNAUTHORIZED); // 상태 코드
-        body.put("error", "Unauthorized"); //에러 타입
-        body.put("message", "Invalid email or password"); // 인증 실패 메시지
-        body.put("path", request.getRequestURI()); // 어느 URL에서 실패했는지
+        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        body.put("error", "Unauthorized");
+        body.put("message", "Invalid email or password");
+        body.put("path", request.getRequestURI());
         body.put("timestamp", LocalDateTime.now().toString());
 
         // Map을 JSON으로 변환하여 HTTP 응답으로 출력

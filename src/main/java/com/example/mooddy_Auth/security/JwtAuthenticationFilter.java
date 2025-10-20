@@ -25,7 +25,6 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-//요청 한번당 한번만 실행되는 필터
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -36,12 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization"); //Authorization 담긴 헤더값 가져오기
-        final String jwt; // 실제 토큰만 빼서 저장하는 변수
-        final String username; // 토큰에서 추출한 사용자 식별값
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // 다음 필터로 진행 (FilterSecurityInterceptor)
             filterChain.doFilter(request, response);
             return;
         }
@@ -74,27 +72,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // username 이 존재하고 아직 인증 안 된 요청인지 확인
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // DB에서 사용자 정보 조회
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            // 토큰 유효성 검증
             if (jwtService.isTokenValid(jwt, userDetails)) {
 
-                // 인증용 토큰 생성
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails, // 사용자 정보
+                                userDetails,
                                 null,
-                                userDetails.getAuthorities() // 권한 정보
+                                userDetails.getAuthorities()
                         );
-                // 추가정보 담는 메서드
+
                 authenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
 
-                //Security Context에 인증 정보 등록
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }

@@ -51,8 +51,7 @@ public class AuthService {
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
-        // User -> UserDetailResponseDto 변환
-        UserDetailResponseDto userDetailResponseDto = UserDetailResponseDto.builder()
+        UserDetailResponseDto userDto = UserDetailResponseDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .email(user.getEmail())
@@ -65,43 +64,34 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
-                .user(userDetailResponseDto)     //화면 표시용
+                .user(userDto)     //화면 표시용
                 .build();
     }
 
     // 로그인
     public AuthResponse login(AuthRequest authRequest) {
         try {
-            // 이메일로만 로그인
-            String email = authRequest.getEmail();
-
-            // 인증 시도 및 user 조회 후 Authentication 객체 얻기
+            // 이메일로 로그인 시도
             Authentication authentication =authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, authRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(
+                            authRequest.getEmail(),
+                            authRequest.getPassword()
+                    )
             );
 
-            // AuthenticationManager가 UserDetailsService를 통해 인증 후 반환한 User 객체 가져오기
+            // 인증 성공 후 UserDetailsService 에서 반환된 User 객체 추출
             User user = (User) authentication.getPrincipal();
 
             // 로그인 성공시 토큰 발급
             String jwtToken = jwtService.generateToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
 
-            // User -> UserDetailResponseDto 변환
-            UserDetailResponseDto userDetailResponseDto = UserDetailResponseDto.builder()
-                    .id(user.getId())
-                    .nickname(user.getNickname())
-                    .email(user.getEmail())
-                    .birthDate(user.getBirthDate())
-                    .provider(user.getProvider())
-                    .enabled(user.isEnabled())
-                    .build();
-
             return AuthResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
-                    .user(userDetailResponseDto)
+                    .user(UserDetailResponseDto.fromEntity(user))
                     .build();
+
         } catch (AuthenticationException e) {
             throw new AuthenticationException("Invalid email or password");
         }
